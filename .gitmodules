@@ -1,0 +1,3 @@
+[submodule "submodules"]
+	path = submodules
+	url = https://github.com/Hanon2/git_submod_fifo_queue.git
