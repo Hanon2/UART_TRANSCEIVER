@@ -3,5 +3,6 @@
 *.project
 *.settings
 *.cmd
+*.launch
 targetConfigs
 Debug

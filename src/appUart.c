@@ -28,8 +28,8 @@ uint8_t colorTable[] = {red, green, blue, yellow, magenta, cyan, white};
 static char* colors[] = {"red\0", "green\0", "blue\0", "yellow\0", "magenta\0", "cyan\0", "white\0"};
 
 static bool canWeRunRecieval, canWeRunTransmit = false;
-static uint8_t assignedColor;
-static uint8_t colorToBeTransmittedIdx = 0;
+static uint8_t assignedColor = red;
+static uint8_t colorToBeTransmittedIdx = 1;
 
 
 // Initialize queues
@@ -76,17 +76,18 @@ void runRxHandler(void)
         char recievedData[MESSAGE_CAPACITY];
         {
             int i = 0;
-            char characterToBeDequeued='x';
-            while ((characterToBeDequeued!='\0') && i<MESSAGE_CAPACITY)
+            char characterToBeDequeued = 'x';
+            while ((characterToBeDequeued != '\0') && i < MESSAGE_CAPACITY)
             {
-                (void)dequeue(&queues[RX_IDX], (uint8_t*)characterToBeDequeued);
+                // Pass the address of characterToBeDequeued without casting
+                dequeue(&queues[RX_IDX], (uint8_t *)&characterToBeDequeued);
                 recievedData[i] = characterToBeDequeued;
                 ++i;
             }
         }
         {
             int i;
-            for (i =0; i<MESSAGE_CAPACITY; ++i)
+            for (i = 0; i < MESSAGE_CAPACITY; ++i)
             {
                 if (strcmp(recievedData, colors[i]) == 0)
                 {
@@ -99,6 +100,7 @@ void runRxHandler(void)
     }
 }
 
+
 void runTxHandler(void)
 {
     if (canWeRunTransmit)
@@ -107,10 +109,12 @@ void runTxHandler(void)
         do
         {
             (void)enqueue(&queues[TX_IDX], colors[colorToBeTransmittedIdx][idxForCharacterToBeSent]);
-        }while (colors[colorToBeTransmittedIdx][idxForCharacterToBeSent++] != '\0');
-        (void)enqueue(&queues[TX_IDX], colors[colorToBeTransmittedIdx][idxForCharacterToBeSent]);
+        } while (colors[colorToBeTransmittedIdx][idxForCharacterToBeSent++] != '\0');
+
+        IE2 |= UCA0TXIE;
+        canWeRunTransmit = false;
     }
-    canWeRunTransmit = false;
+
 }
 void setCanWeRunTransmit(bool condition)
 {
@@ -140,6 +144,6 @@ __interrupt void USCI0TX_ISR(void)
      if (dataToBeDequed == '\0')
      {
          IE2 &= ~UCA0TXIE;
-         colorToBeTransmittedIdx = (colorToBeTransmittedIdx + 1) & NUM_OF_COLORS;
+         colorToBeTransmittedIdx = (colorToBeTransmittedIdx + 1) % NUM_OF_COLORS;
      }
 }

@@ -22,6 +22,7 @@ void initTimerA(void)
 __interrupt void Timer_A_ISR(void)
 {
     static bool ledOn = true;
+    ledOn = !ledOn;
     if (ledOn)
         P2OUT = getAssignedColor();
     else
