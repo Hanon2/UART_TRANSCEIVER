@@ -1,5 +1,8 @@
 #include "appGPIO.h"
+#include "appUart.h"
 #include <stdint.h>
+#include <stdbool.h>
+
 #define NUM_OF_PINS 6
 
 typedef struct
@@ -53,4 +56,13 @@ void initGPIO(void)
         configurePin(usedGpio[i].ifg, usedGpio[i].pin, usedGpio[i].isrFlag); // Configure interrupt flag
         configurePin(usedGpio[i].ies, usedGpio[i].pin, usedGpio[i].fallingOrRisingEdge); // Configure edge select
     }
+}
+
+//ISR for button.
+//This is responsible for enabling the TX ISR, and making sure that we start at the right index for the transmitted char.
+#pragma vector=PORT1_VECTOR
+__interrupt void Port_1_ISR(void)
+{
+    P1IFG &= ~BIT3; // Clear interrupt flag for P1.3
+    setCanWeRunTransmit(true);
 }
