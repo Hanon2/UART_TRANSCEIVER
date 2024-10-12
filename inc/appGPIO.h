@@ -1,5 +1,5 @@
-#ifndef APP_GPIO_H
-#define APP_GPIO_H
+#ifndef APPGPIO_H
+#define APPGPIO_H
 #include <msp430.h>
 
 
