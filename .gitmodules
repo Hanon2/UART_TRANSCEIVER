@@ -1,0 +1,7 @@
+[submodule "submodules/debounce"]
+    path = submodules/debounce
+    url = https://github.com/Hanon2/git_submod_debounce.git
+
+[submodule "submodules/fifo_queue"]
+    path = submodules/fifo_queue
+    url = https://github.com/Hanon2/git_submod_debounce.git

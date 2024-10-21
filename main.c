@@ -1,6 +1,7 @@
 #include "appGPIO.h"
 #include "appUart.h"
 #include "timer.h"
+#include "button.h"
 #include <msp430.h>
 int main(void)
 {
@@ -14,6 +15,7 @@ int main(void)
     {
         runRxHandler();
         runTxHandler();
+        runButtonLogic();
     }
 }
 

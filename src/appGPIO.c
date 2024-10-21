@@ -27,7 +27,7 @@ gpio_config_t usedGpio[NUM_OF_PINS] =
     {&P2DIR, &P2SEL, &P2SEL2, &P2IE, &P1IES, &P1IFG, BIT1, 1, 0, 0, 0, 0, 0},
     {&P2DIR, &P2SEL, &P2SEL2, &P2IE, &P1IES, &P1IFG, BIT3, 1, 0, 0, 0, 0, 0},
     {&P2DIR, &P2SEL, &P2SEL2, &P2IE, &P1IES, &P1IFG, BIT5, 1, 0, 0, 0, 0, 0},
-    {&P1DIR, &P1SEL, &P1SEL2, &P1IE, &P1IES, &P1IFG, BIT3, 0, 0, 0, 1, 1, 0},
+    {&P1DIR, &P1SEL, &P1SEL2, &P1IE, &P1IES, &P1IFG, BIT3, 0, 0, 0, 0, 0, 0},
     {&P1DIR, &P1SEL, &P1SEL2, &P1IE, &P1IES, &P1IFG, BIT1, 0, 1, 1, 0, 0, 0},
     {&P1DIR, &P1SEL, &P1SEL2, &P1IE, &P1IES, &P1IFG, BIT2, 0, 1, 1, 0, 0, 0}
 };
@@ -58,11 +58,3 @@ void initGPIO(void)
     }
 }
 
-//ISR for button.
-//This is responsible for enabling the TX ISR, and making sure that we start at the right index for the transmitted char.
-#pragma vector=PORT1_VECTOR
-__interrupt void Port_1_ISR(void)
-{
-    P1IFG &= ~BIT3; // Clear interrupt flag for P1.3
-    setCanWeRunTransmit(true);
-}
