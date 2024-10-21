@@ -1,6 +1,7 @@
 #ifndef BUTTON_H
 #define BUTTON_H
+#include <stdbool.h>
 
-void runButtonLogic(void);
+bool runButtonLogic(void);
 
 #endif

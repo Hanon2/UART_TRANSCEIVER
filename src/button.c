@@ -1,7 +1,7 @@
 #include "debounce.h"
 #include "button.h"
-#include "appUart.h"
 #include <msp430.h>
+#include <stdbool.h>
 #define BUTTONPRESSED   (!(P1IN & BIT3))
 
 button_contents_t buttonToSwitchColors = {
@@ -15,15 +15,14 @@ button_contents_t buttonToSwitchColors = {
     .isNowPressed      = false
 };
 
-void runButtonLogic(void) {
+bool runButtonLogic(void) {
     switch (handleButton(&buttonToSwitchColors,
                          BUTTONPRESSED))
     {
         case BS_PRESSED:
         case BS_LONG_PRESSED:
-            setCanWeRunTransmit(true);
-        break;
+            return true;
         default:
-        break;
+            return false;
     }
 }

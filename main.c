@@ -15,7 +15,8 @@ int main(void)
     {
         runRxHandler();
         runTxHandler();
-        runButtonLogic();
+        if (runButtonLogic())
+            setCanWeRunTransmit(true);
     }
 }
 
